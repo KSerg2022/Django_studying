@@ -1,0 +1,54 @@
+{% if not logged_user %}
+    <p><strong>Author:</strong>
+        <span class="date">
+            <a href="{% url 'blog:post_list_for_author' post.author.username %}" class="text-dark">
+                {% if post.author.first_name %} {{ post.author.first_name }} {% endif%}
+                {% if post.author.last_name %} {{ post.author.last_name }}, {% endif%}
+
+                {% if post.author.last_name %}{% else%}
+                  {% if post.author.last_name %}
+                      {% else%} {{ post.author.username }}
+                  {%endif%}
+                {%endif%}
+            </a>
+            {% if post.author.email %} {{ post.author.email }} {% endif%}
+        </span></p>
+
+    <p><strong>Publish:</strong>
+        <span class="date">
+            {% if post.publish %} {{ post.publish|date }} {% endif %}
+        </span>
+    </p>
+{%endif%}
+
+{% if logged_user %}
+    <p><strong>Author:</strong>
+        <span class="date">
+            {% if post.author.first_name %} {{ post.author.first_name }} {% endif%}
+            {% if post.author.last_name %} {{ post.author.last_name }}, {% endif%}
+
+            {% if post.author.last_name %}{% else%}
+              {% if post.author.last_name %}
+                  {% else%} {{ post.author.username }}
+              {%endif%}
+            {%endif%}
+        </span>
+    </p>
+
+    <p><strong>Publish:</strong>
+        <span class="date">
+            {% if post.publish %} {{ post.publish|date }} {% endif %}
+        </span>
+    </p>
+
+    <p><strong>Status:</strong>
+        <span class="date">
+            {% if post.status == 'published' %}
+                <a href="{% url 'blog:get_user_posts_published' 'published' %}" class="text-dark">{{ post.status }}</a>
+            {% endif %}
+            {% if post.status == 'draft' %}
+                <a href="{% url 'blog:get_user_posts_draft' 'draft' %}" class="text-dark">{{post.status }}</a>
+            {% endif %}
+        </span>
+    </p>
+{% endif %}

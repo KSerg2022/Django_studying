@@ -1,0 +1,24 @@
+{% extends '_base.html' %}
+
+{% block title %} Delete post {% endblock %}
+
+{% block content %}
+
+    <main role="main">
+        <div class="jumbotron  my_jumbotron">
+            <div class="container">
+                <h1 class="display-5">Are you sure you want to delete the post: "{{ post.title }}"</h1>
+            </div>
+        </div>
+    <div class="container">
+        <p>
+            <a href="{% url 'blog:sure_delete_post' post.id %}?yes=yes">
+                <input type="button" value="{{ delete }} post" class="btn btn-danger"/>
+            </a>
+        </p>
+    </div>
+
+
+    </main>
+
+{% endblock %}

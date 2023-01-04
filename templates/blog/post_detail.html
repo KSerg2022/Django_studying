@@ -1,0 +1,94 @@
+{% extends '_base.html' %}
+
+{% block title %} Post detail {% endblock %}
+
+{% block content %}
+
+<main role="main">
+
+    <div class="jumbotron my_jumbotron">
+        <div class="container">
+            <h1 class="display-5">Post's name: {{ post.title }}</h1>
+
+                {% include 'blog/_tag.html' %}
+                {% include 'blog/_similar_posts.html' %}
+
+        </div>
+    </div>
+
+
+    <div class="container">
+        {% include '_message.html' %}
+
+        <div class="d-flex justify-content-between">
+            <div class="p-2">
+                {% include '_go_back.html' %}
+            </div>
+            {% if user == post.author %}
+                {% if user.is_authenticated %}
+                    <div class="p-2">
+                        <a class="btn btn-info" href="{% url 'blog:edit_post' post.id %}" role="button">
+                        Edit post &raquo;</a>
+                    </div>
+                    <div class="p-2">
+                        <a href="{% url 'blog:delete_post' post.id %}">
+                            <input type="button" value="Delete post" class="btn btn-danger" role="button"/>
+                        </a>
+
+                    </div>
+                {% endif%}
+            {% endif%}
+        </div>
+
+        {% include 'blog/_post_info.html' %}
+
+          <p><strong>Body:</strong> {{ post.body|linebreaks }}</p>
+          <p><strong>Updated:</strong> {{ post.updated }}</p>
+          <p><strong>Status:</strong> {{ post.status }}</p>
+
+
+        <a href="#add-comment" data-toggle="collapse" class="text-dark">
+            <button type="button" class="btn btn-outline-secondary">
+                Add comment <i class="fa-solid fa-angles-down"></i></button>
+        </a>
+        <div id="add-comment" class="collapse">
+            <form action="" method="post" id="post">
+                {% csrf_token %}
+                <table>
+                {{ comment_form.as_table }}
+                </table>
+                <input type="submit" value="Add comment" class="btn btn-secondary" form="post"/>
+            </form>
+        </div>
+
+
+                {% with comments.count as total_comments %}
+            {% if not total_comments%}
+                <button type="button" class="btn btn-outline-info">
+                    {{ total_comments }} comment{{ total_comments|pluralize }}
+                </button>
+
+            {% else %}
+            <a href="#demo" data-toggle="collapse" class="text-dark">
+                <button type="button" class="btn btn-outline-info">
+                    {{ total_comments }} comment{{ total_comments|pluralize }} <i class="fa-solid fa-angles-down"></i>
+                </button>
+            {% endif %}
+                {% endwith %}
+            </a>
+            <div id="demo" class="collapse">
+                    {% for comment in comments %}
+                            <p class="info font-weight-bold">
+                                Comment {{ forloop.counter }} by <span class="text-capitalize">{{ comment.name }}.</span></p>
+                            <p class="font-weight-normal">{{ comment.body|linebreaks }}</p>
+                            <p class="font-italic small">Data: {{comment.created}}</p>
+                    <hr>
+                    {% endfor %}
+            </div>
+
+    </div>
+</main>
+
+{% endblock %}
+
+

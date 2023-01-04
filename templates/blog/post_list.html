@@ -1,0 +1,47 @@
+{% extends '_base.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+
+    <main role="main">
+
+        <div class="jumbotron  my_jumbotron">
+            <div class="container">
+                <h1 class="display-5 text-center">{{ title }}.</h1>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                {% if post_list %}
+                   {% for post in post_list %}
+                        <div class="col-md-4">
+                            <h2><a href="#demo{{ forloop.counter }}" data-toggle="collapse">
+                                {{ post.title|truncatewords:2|linebreaks }}</a></h2>
+                            <div id="demo{{ forloop.counter }}" class="collapse font-italic font-weight-bold">
+                                {{ post.title|linebreaks }}
+                            </div>
+
+                            {% include 'blog/_tag.html' %}
+                            {% include 'blog/_post_info.html' %}
+
+                            <p>{{ post.body|truncatewords:30|linebreaks }}</p>
+                            <p>
+                                <a class="btn btn-secondary" href="{{ post.get_absolute_url }}" role="button">
+                                View details &raquo;</a>
+                            </p>
+                        </div>
+                  {% endfor %}
+
+                  {% else %}
+                  <p>In db are not posts</p>
+                {% endif %}
+            </div>
+
+                {% include '_paginate.html' with page=page_obj %}
+        </div>
+
+    </main>
+
+{% endblock %}

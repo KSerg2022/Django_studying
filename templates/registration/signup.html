@@ -1,0 +1,33 @@
+{% extends '_base.html' %}
+
+{% block title %} Add post {% endblock %}
+
+{% block content %}
+
+    <main role="main">
+
+        <div class="jumbotron">
+            <div class="container">
+                <h1 class="display-3 text-center">You can register on site.</h1>
+            </div>
+        </div>
+
+        <div class="container">
+          {% include '_message.html' %}
+          {% include '_go_back.html' %}
+
+            <div class="row">
+              <form action="" method="post" id="post">
+                {% csrf_token %}
+                <table>
+                {{ signup_form.as_table }}
+                </table>
+                <input type="submit" value="Add user" class="btn btn-secondary" form="post"/>
+            </form>
+            </div>
+
+        </div>
+
+    </main>
+
+{% endblock %}

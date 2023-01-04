@@ -1,0 +1,76 @@
+{% if not logged_user %}
+    <div class="text_block">
+        <ul class="list-group list-group-horizontal">
+        {% if post.tags.all %}
+            <b>Tags:&nbsp;</b>
+            {% for tag in post.tags.all %}
+                <li class="list-group">
+                    <a href="{% url 'blog:post_list_for_tag' tag %}" class='text-dark'>
+
+                    <button type="button" class="badge badge-pill btn btn-outline-secondary">{{ tag }}&nbsp;</button>
+                    </a>
+                </li>&nbsp;
+            {% endfor %}
+        {%endif%}
+
+        {% if post_list %}
+        {% else %}
+            <li class="list-group">
+                <a href="#add-tag1" data-toggle="collapse" class="text-dark">
+                    <button type="button" class="badge badge-pill btn-secondary text_block">
+                        Add tag <i class="fa-solid fa-angles-down"></i></button>
+                </a>
+                <div id="add-tag1" class="collapse">
+                    <form action="" method="post" id="tag">
+                        {% csrf_token %}
+                        <table>
+                        {{ tag_form.as_p }}
+                        </table>
+
+                        <input type="submit" value="Add tag" class="badge-pill badge-secondary" form="tag"/>
+                    </form>
+                </div>
+            </li>
+            {%endif%}
+        </ul>
+    </div>
+
+{% else %}
+
+   <div class="text_block">
+        <ul class="list-group list-group-horizontal">
+        {% if post.tags.all %}
+            <b>Tags:&nbsp;</b>
+            {% for tag in post.tags.all %}
+                <li class="list-group">
+                    <a href="{% url 'blog:user_posts_for_tag' user=user tag=tag %}" class='text-dark'>
+
+                    <button type="button" class="badge badge-pill btn btn-outline-secondary">{{ tag }}&nbsp;</button>
+                    </a>
+                </li>&nbsp;
+            {% endfor %}
+        {%endif%}
+
+        {% if post_list %}
+        {% else %}
+            <li class="list-group">
+                <a href="#add-tag2" data-toggle="collapse" class="text-dark">
+                    <button type="button" class="badge badge-pill btn-secondary text_block">
+                        Add tag <i class="fa-solid fa-angles-down"></i></button>
+                </a>
+                <div id="add-tag2" class="collapse">
+                    <form action="" method="post" id="tag2">
+                        {% csrf_token %}
+                        <table>
+                        {{ tag_form.as_p }}
+                        </table>
+
+                        <input type="submit" value="Add tag" class="badge-pill badge-secondary" form="tag2"/>
+                    </form>
+                </div>
+            </li>
+            {%endif%}
+        </ul>
+    </div>
+
+{% endif %}

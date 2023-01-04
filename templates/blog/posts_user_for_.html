@@ -1,0 +1,103 @@
+{% extends '_base.html' %}
+{% load blog_tags %}
+
+{% block title %} Post list {% endblock %}
+
+{% block content %}
+
+    <main role="main">
+
+        <div class="jumbotron  my_jumbotron">
+            <div class="container">
+                {% if tag %}
+                <h1 class="display-5 text-center">{{ logged_user }}'s posts  with the tag - "{{ tag }}".</h1>{% endif %}
+                {% if author %}
+                <h1 class="display-5 text-center">Posts by - {{ author }}.</h1>{% endif %}
+
+                <div class="row justify-content-center">
+                    <ul class="list-group list-group-horizontal">
+                        <li class="list-group">
+                            <p>Total {{ logged_user }}'s posts -  <b>{% total_user_posts logged_user %}</b>.&nbsp;</p>
+                        </li>
+                        <li class="list-group">
+                            <p>Total {{ logged_user }}'s published posts -
+                                <b>{% total_user_posts_with_status logged_user 'published' %}</b>.&nbsp;</p>
+                        </li>
+                        <li class="list-group">
+                            <p>Total {{ logged_user }}'s draft posts -
+                                <b>{% total_user_posts_with_status logged_user 'draft' %}</b>.</p>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                {% if post_list %}
+                   {% for post in post_list %}
+                        <div class="col-md-4">
+                            <h2><a href="#demo{{ forloop.counter }}" data-toggle="collapse">
+                                {{ post.title|truncatewords:2|linebreaks }}</a></h2>
+                            <div id="demo{{ forloop.counter }}" class="collapse font-italic font-weight-bold">
+                                {{ post.title|linebreaks }}
+                            </div>
+
+                            {% include 'blog/_tag.html' %}
+                            {% include 'blog/_post_info.html' %}
+
+                            <p>{{ post.body|truncatewords:30|linebreaks }}</p>
+                            <p>
+                                <a class="btn btn-secondary" href="{{ post.get_absolute_url }}" role="button">
+                                View details &raquo;</a>
+                            </p>
+                        </div>
+                  {% endfor %}
+
+                  {% else %}
+                  <p>In db are not posts with this teg - {{ tag }}.</p>
+                {% endif %}
+            </div>
+
+                {% include '_paginate.html' with page=page %}
+                {% include '_paginate.html' with page=post_list %}
+                {% include '_paginate.html' with page=page_obj %}
+
+            <ul class="pagination  justify-content-center">
+                {% if page.has_previous %}
+                  <li class="page-item">
+                      <a class="page-link" href="?page={{ page.previous_page_number }}">
+                        <i class="fa-solid fa-angles-left"></i> Previous</a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled"><span class="page-link">
+                    <i class="fa-solid fa-angles-left"></i> Previous</span></li>
+                {% endif %}
+                {% for i in page.paginator.page_range %}
+                  {% if page.number == i %}
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">{{ i }}<span class="sr-only">(current)</span></span>
+                    </li>
+                  {% else %}
+                    <li class="page-item" aria-current="page">
+                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+                {% if page.has_next %}
+                  <li  class="page-item">
+                      <a class="page-link" href="?page={{ page.next_page_number }}">
+                        Next <i class="fa-solid fa-angles-right"></i></a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                      <span class="page-link">Next <i class="fa-solid fa-angles-right"></i></span>
+                  </li>
+                {% endif %}
+              </ul>
+
+         </div>
+    </main>
+
+{% endblock %}

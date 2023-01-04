@@ -1,0 +1,19 @@
+<div>
+    <ul class="list-group list-group-horizontal">
+        <b>Similar post:&nbsp;</b>
+        {% for post in similar_posts %}
+            <li class="list-group">
+                <a href="{{ post.get_absolute_url }}">
+                <button type="button" class="badge badge-pill btn btn-outline-info">
+                    {{ post.title }}
+                </button>
+                </a>
+            </li>
+        {% if not forloop.last %}&nbsp;{% endif %}
+
+        {% empty %}
+            There are no similar post yet.
+        {% endfor %}
+    </ul>
+
+</div>

@@ -1,0 +1,47 @@
+{% extends '_base.html' %}
+
+{% block title %} Add post {% endblock %}
+
+{% block content %}
+
+    <main role="main">
+
+        <div class="jumbotron  my_jumbotron">
+            <div class="container">
+                <h1 class="display-5 text-center">{{ title }}{{ post.title }}</h1>
+            </div>
+        </div>
+
+        <div class="container">
+          {% include '_message.html' %}
+
+
+            <div class="d-flex justify-content-between">
+                <div class="p-2">
+                    {% include '_go_back.html' %}
+                </div>
+                <div class="p-2">
+                    {% if delete %}
+                    <a href="{% url 'blog:delete_post' post.id %}">
+                        <input type="button" value="{{ delete }} post" class="btn btn-danger" role="button"/>
+                    </a>
+                    {% endif%}
+                </div>
+            </div>
+
+
+            <div class="row">
+              <form action="" method="post" id="post">
+                {% csrf_token %}
+                <table>
+                {{ post_form.as_table }}
+                </table>
+                <input type="submit" value="{{ action }}" class="btn btn-secondary" form="post"/>
+            </form>
+            </div>
+
+        </div>
+
+    </main>
+
+{% endblock %}

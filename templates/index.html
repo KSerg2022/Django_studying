@@ -1,0 +1,38 @@
+{% extends '_base.html' %}
+{% load blog_tags %}
+
+{% block title %} Index {% endblock %}
+
+{% block content %}
+
+    <main role="main">
+        <div class="jumbotron my_jumbotron">
+            <div class="container">
+                <h1 class="display-4">You are will be happy here!</h1>
+                <p>Blog application contains: <b>{% total_posts %}</b> posts.</p>
+                <p><a class="btn btn-primary btn-lg" href="{% url 'blog:posts' %}" role="button">See all posts &raquo;</a></p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>Latest posts</h3>
+                    {% show_latest_posts 5 %}
+                </div>
+                <div class="col-md-4">
+                    <h3>Most commented posts</h3>
+                    {% get_most_commented_posts as most_commented_posts %}
+                    <ul>
+                        {% for post in most_commented_posts %}
+                        <li>
+                            <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                        </li>
+                        {% endfor %}
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+{% endblock %}
