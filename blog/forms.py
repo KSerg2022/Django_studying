@@ -41,5 +41,5 @@ class UserSettingsForm(forms.ModelForm):
     class Meta:
         model = User
         fields = '__all__'
-        exclude = ('last_login', 'is_superuser', 'is_staff', 'date_joined', 'user_permissions', 'groups', 'password')
-        # default = {'author_id': 'user.get_id'}
+        exclude = ('last_login', 'is_superuser', 'is_staff', 'date_joined', 'user_permissions', 'groups', 'password',
+                   'username')
