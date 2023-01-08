@@ -10,6 +10,8 @@ urlpatterns = [
     re_path(r'^user/settings/$', views.settings, name='settings'),
 
     path('', views.index, name='index'),
+    path('accounts/profile/', views.index, name='index'),
+
     re_path(r'^add/post/$', views.add_post, name='add_post'),
     re_path(r'^user/posts/$', views.get_user_posts, name='get_user_posts'),
     path('user/posts/published/<published>', views.get_user_posts, name='get_user_posts_published'),
