@@ -1,5 +1,6 @@
 # Django_studying
 learning django
+Site where you can publish posts, leave comments on posts, add tags to posts, etc.
 
 This BLOG app has:
 
