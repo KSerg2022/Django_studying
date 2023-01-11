@@ -2,7 +2,6 @@ from django import forms
 
 
 from .models import Comment, Tag, Post
-from django.contrib.auth.models import User
 
 
 class EmailPostForm(forms.Form):
@@ -35,11 +34,3 @@ class PostForm(forms.ModelForm):
         fields = '__all__'
         exclude = ('slug', 'author',)
         widgets = {'body': forms.Textarea(attrs={'style': 'height: 20em; width: 65em'}), }
-
-
-class UserSettingsForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = '__all__'
-        exclude = ('last_login', 'is_superuser', 'is_staff', 'date_joined', 'user_permissions', 'groups', 'password',
-                   'username')

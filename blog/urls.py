@@ -6,11 +6,7 @@ from . import views
 app_name = 'blog'
 
 urlpatterns = [
-    re_path(r'^signup/$', views.signup, name='signup'),
-    re_path(r'^user/settings/$', views.settings, name='settings'),
-
     path('', views.index, name='index'),
-    path('accounts/profile/', views.index, name='index'),
 
     re_path(r'^add/post/$', views.add_post, name='add_post'),
     re_path(r'^user/posts/$', views.get_user_posts, name='get_user_posts'),
