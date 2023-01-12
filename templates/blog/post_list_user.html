@@ -46,7 +46,8 @@
 
                             <p>{{ post.body|truncatewords:30|linebreaks }}</p>
                             <p>
-                                <a class="btn btn-secondary" href="{{ post.get_absolute_url }}" role="button">
+                                <a class="btn btn-secondary"
+                                   href="{% url 'blog:post_detail_user' post.publish.year post.publish.month post.publish.day post.slug post.author.id %}" role="button">
                                 View details &raquo;</a>
                                 {% if user.is_authenticated %}
                                 <a class="btn btn-info" href="{% url 'blog:edit_post' post.id %}" role="button">

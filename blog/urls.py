@@ -24,6 +24,6 @@ urlpatterns = [
     path('posts/user/<user>/<tag>', views.user_posts_for_, name='user_posts_for_tag'),
 
     path('<int:year>/<int:month>/<int:day>/<slug:post>/', views.post_detail,  name='post_detail'),
-
+    path('<int:year>/<int:month>/<int:day>/<slug:post>/<int:user>', views.post_detail,  name='post_detail_user'),
 
 ]

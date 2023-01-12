@@ -20,7 +20,6 @@ def index(request):
 
 class PostListView(generic.ListView):
     model = Post
-    # queryset = Post.published.all()
     queryset = Post.objects.filter(status='published')
     paginate_by = 3
     template_name = 'blog/post_list.html'
@@ -43,7 +42,7 @@ class PostDraftListView(generic.ListView):
         return context
 
 
-def post_detail(request, year, month, day, post):
+def post_detail(request, year, month, day, post, user=None):
     """Post detail"""
     post = get_object_or_404(
         Post,
@@ -94,14 +93,20 @@ def post_detail(request, year, month, day, post):
     similar_posts = Post.objects.filter(status='published').filter(tags__in=post_tags_ids).exclude(id=post.id)
     similar_posts = similar_posts.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[:5]
 
+    add_to_context = {}
+    if user == request.user.id:
+        add_to_context['logged_user'] = request.user
+
     context = {
         'post': post,
         'comments': comments,
         'new_comment': new_comment,
         'comment_form': comment_form,
         'tag_form': tag_form,
-        'similar_posts': similar_posts
+        'similar_posts': similar_posts,
     }
+    context.update(add_to_context)
+
     return render(
         request,
         'blog/post_detail.html',
@@ -266,7 +271,7 @@ def edit_post(request, post_id=None):
             context = {'post_form': post_form}
             return render(request, 'blog/add_post.html', context)
 
-        url = post.get_absolute_url()
+        url = post.get_absolute_url() + str(post.author.id)
         return HttpResponseRedirect(url)
 
     context = {'post_form': post_form,
