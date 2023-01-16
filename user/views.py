@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 from .forms import UserSettingsForm
 
@@ -42,10 +43,19 @@ def settings(request):
     if request.method == 'POST':
         settings_form = UserSettingsForm(data=request.POST)
         if settings_form.is_valid():
-            user.first_name = settings_form.data.get('first_name')
-            user.last_name = settings_form.data.get('last_name')
-            user.email = settings_form.data.get('email')
+            user.first_name = settings_form.cleaned_data.get('first_name')
+            user.last_name = settings_form.cleaned_data.get('last_name')
+            user.email = settings_form.cleaned_data.get('email')
+            user.is_active = settings_form.cleaned_data.get('is_active')
             user.save()
+
+            if not settings_form.cleaned_data.get('is_active'):
+                user.delete()
+                logout(request)
+                messages.success(request, 'Your account deleted from site.',
+                                 extra_tags='list-group-item list-group-item-success')
+                return redirect('blog:index')
+                # return render(request, './index.html')
 
             messages.success(request, 'You change your settings.',
                              extra_tags='list-group-item list-group-item-success')
